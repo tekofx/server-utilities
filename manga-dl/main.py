@@ -28,6 +28,7 @@ def write_saved_chapter(num: int):
 
 
 def get_latest_chapter():
+    # TODO: add progress bar
 
     r = requests.get(URL)
     text = r.text
@@ -43,13 +44,13 @@ def get_latest_chapter():
     chapter_path = re.search('href="(.+?)">', tag).group(1)
     chapter_url = URL + chapter_path
 
-    return chapter_num, chapter_url
+    return {"num": chapter_num, "url": chapter_url}
 
 
 def download_chapter(chapter: dict):
     num = chapter["num"]
     url = chapter["url"]
-    folder = f"Chapter {num}"
+    folder = f"data/Chapter {num}"
     r = requests.get(url)
     os.mkdir(folder)
     text = r.text
@@ -75,5 +76,6 @@ if get_saved_chapter() == num:
 else:
     write_saved_chapter(num)
     print(f"New chapter {num} available")
+    print(f"Downloading chapter {num}")
     download_chapter(latest_chapter)
     print(latest_chapter["url"])
