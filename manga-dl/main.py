@@ -43,7 +43,7 @@ def get_latest_chapter():
     chapter_path = re.search('href="(.+?)">', tag).group(1)
     chapter_url = URL + chapter_path
 
-    return {"num": chapter_num, "url": chapter_url}
+    return chapter_num, chapter_url
 
 
 def download_chapter(chapter: dict):
@@ -67,13 +67,13 @@ def download_chapter(chapter: dict):
 
 
 latest_chapter = get_latest_chapter()
-download_chapter(latest_chapter)
+num = latest_chapter["num"]
+url = latest_chapter["url"]
 
-""" if get_saved_chapter() == latest_chapter["num"]:
+if get_saved_chapter() == num:
     print("No new update")
 else:
-    write_saved_chapter(latest_chapter["num"])
-    print("New chapter")
-
+    write_saved_chapter(num)
+    print(f"New chapter {num} available")
+    download_chapter(latest_chapter)
     print(latest_chapter["url"])
- """
